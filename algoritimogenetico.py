@@ -7,20 +7,19 @@ import operator
 
 ######Calcular o FITNESS/APTIDAO (DISTANCIA) 1/distTotal DA POPULAÇÃO INICIAL, POR MEIO DA ROLETA ###############
 #passar a populacao incial para o fitness
-def fitness (tamanhoPermuta, rotas, DicpontosCartesianos): #NAO TO CONSEGUINDO PEGAR AS COORDENADAS DOS VERTICES PARA CALCULAR A  DISTANCIA
+def fitness (tamanhoPermuta, rotas, DicpontosCartesianos): 
     fitnessPopulacao = {}
     populacao = []
-
-    for count in range(tamanhoPermuta):
+    for count in range(0,tamanhoPermuta):
         populacao.append('R'+"".join(rotas[count])+'R')
     
-
-    for r in populacao:
+    for count2,r in enumerate(populacao):
         distancia = 0
-        for index in range ((len(r)-1)): 
+        for index in range(len(r)-1): 
             distancia += abs(DicpontosCartesianos[r[index+1]][0] - DicpontosCartesianos[r[index]][0]) + abs(DicpontosCartesianos[r[index+1]][1] - DicpontosCartesianos[r[index]][1])
-        fitnessPopulacao[" ". join(r[1:-1])] = distancia
+        fitnessPopulacao[" ".join(r[1:-1])] = distancia
     print(len(fitnessPopulacao))
+    
     return fitnessPopulacao, int(tamanhoPermuta)
 
 ### adicionando ranking dos individuos por meio do fitness
@@ -33,16 +32,6 @@ def addRanking(dictIndividuos):
         paisFitness.append( 1 / itemlist[1]) 
     ###ADICIONANDO A LISTA DOS PAIS O VALOR DO RANKING DOS MESMOS
     #adicionando teste
- 
-
-
-
-
-
-
-
-
-
 
 ############## Leitura da matriz ##############
 arquivo = open ("matriz.txt", "r")
@@ -74,31 +63,32 @@ vertices= sorted(vertices)
 ########## Parametros do A.G ######################
 
 criteriodeParada = 50 #(quantidade de gerações)
-tamanhoPopulacao = 10 
+tamanhoPopulacao = 10
 txReproducao= 70
 probMutacao = 0.5
 
 #Populacao inicial a partir de 10  tamanhoPopulacao
 
 populacaodisponivel = []
-populacaodisponivel = []
 populacaoAmostra = []
 
 permutacaoPopulacao =  list(itertools.permutations(vertices)) #PERMUTAÇAO TOTAL
-
+#EXCLUIR O ULTIMO ELEMENTO QUE JA FOI PEGADO
 contador = 0
 while contador < tamanhoPopulacao:
     populacaodisponivel =  permutacaoPopulacao
-    populacaoAmostra.append(random.choice(populacaodisponivel))
+    randomPickup = random.choice(populacaodisponivel)
+    if randomPickup not in populacaoAmostra:
+        populacaoAmostra.append(randomPickup)
+    else:
+        contador -= 1
+        pass
     contador += 1
-print(len(populacaoAmostra),"populacaoamostra") #resultado em listas de listas dos 10 individuos 
+
 print(populacaoAmostra)
 distanciasAmostraInicial = fitness(len(populacaoAmostra), populacaoAmostra, DicpontosCartesianos)
 dictFitness = distanciasAmostraInicial[0]
 dictLen = distanciasAmostraInicial[1]
-
-print(len(dictFitness))
-print(dictLen)
 
 addRanking(dictFitness)
 
