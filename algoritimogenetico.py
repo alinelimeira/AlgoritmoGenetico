@@ -32,6 +32,7 @@ def addRanking(dictIndividuos):
     for cont,itemlist in enumerate(sortedDictFit):
         paisFitness.append( 1 / itemlist[1]) 
     ###ADICIONANDO A LISTA DOS PAIS O VALOR DO RANKING DOS MESMOS
+    #adicionando teste
  
 
 
