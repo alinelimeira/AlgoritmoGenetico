@@ -1,37 +1,9 @@
 import random
 import itertools 
 from random import sample
-import operator
+#importando as funcoes
+from functions import addRankingAndSort, fitness
 
-### FUNÇÕES
-
-######Calcular o FITNESS/APTIDAO (DISTANCIA) 1/distTotal DA POPULAÇÃO INICIAL, POR MEIO DA ROLETA ###############
-#passar a populacao incial para o fitness
-def fitness (tamanhoPermuta, rotas, DicpontosCartesianos): 
-    fitnessPopulacao = {}
-    populacao = []
-    for count in range(0,tamanhoPermuta):
-        populacao.append('R'+"".join(rotas[count])+'R')
-    
-    for count2,r in enumerate(populacao):
-        distancia = 0
-        for index in range(len(r)-1): 
-            distancia += abs(DicpontosCartesianos[r[index+1]][0] - DicpontosCartesianos[r[index]][0]) + abs(DicpontosCartesianos[r[index+1]][1] - DicpontosCartesianos[r[index]][1])
-        fitnessPopulacao[" ".join(r[1:-1])] = distancia
-    print(len(fitnessPopulacao))
-    
-    return fitnessPopulacao, int(tamanhoPermuta)
-
-### adicionando ranking dos individuos por meio do fitness
-def addRanking(dictIndividuos):
-    paisFitness = []   
-    ############ORDENAÇAO E METODO DA ROLETA PARA SELECIONAR OS PAIS ###############
-    sortedDictFit = sorted(dictIndividuos.items(), key=operator.itemgetter(1))
-    #pegar cada indivíduo e fazer 1/distanciatotaldelemsm e dps escolher de dois em dois e formar os pais 
-    for cont,itemlist in enumerate(sortedDictFit):
-        paisFitness.append( 1 / itemlist[1]) 
-    ###ADICIONANDO A LISTA DOS PAIS O VALOR DO RANKING DOS MESMOS
-    #adicionando teste
 
 ############## Leitura da matriz ##############
 arquivo = open ("matriz.txt", "r")
@@ -42,6 +14,7 @@ linhas = arquivo.read().splitlines()
 matriz = [] 
 vertices = []
 DicpontosCartesianos = {}
+
 for i in range(len(linhas)):          
     matriz.append(linhas[i].split())  
 
@@ -76,8 +49,7 @@ permutacaoPopulacao =  list(itertools.permutations(vertices)) #PERMUTAÇAO TOTAL
 #EXCLUIR O ULTIMO ELEMENTO QUE JA FOI PEGADO
 contador = 0
 while contador < tamanhoPopulacao:
-    populacaodisponivel =  permutacaoPopulacao
-    randomPickup = random.choice(populacaodisponivel)
+    randomPickup = random.choice(permutacaoPopulacao)
     if randomPickup not in populacaoAmostra:
         populacaoAmostra.append(randomPickup)
     else:
@@ -85,32 +57,10 @@ while contador < tamanhoPopulacao:
         pass
     contador += 1
 
-print(populacaoAmostra)
 distanciasAmostraInicial = fitness(len(populacaoAmostra), populacaoAmostra, DicpontosCartesianos)
 dictFitness = distanciasAmostraInicial[0]
 dictLen = distanciasAmostraInicial[1]
 
-addRanking(dictFitness)
-
-
-
-
-
-
+listaAmostraInicial = addRankingAndSort(dictFitness)
 
 ################## MUTAÇÃO DOS FILHOS #####################
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
