@@ -2,7 +2,7 @@ import random
 import itertools 
 from random import sample
 #importando as funcoes
-from functions import addRankingAndSort, fitness
+from functions import addRankingAndSort, fitness, cruzamento
 
 
 ############## Leitura da matriz ##############
@@ -46,7 +46,7 @@ populacaodisponivel = []
 populacaoAmostra = []
 
 permutacaoPopulacao =  list(itertools.permutations(vertices)) #PERMUTAÇAO TOTAL
-#EXCLUIR O ULTIMO ELEMENTO QUE JA FOI PEGADO
+#escolha aleatoria de 10 indivifuos, 
 contador = 0
 while contador < tamanhoPopulacao:
     randomPickup = random.choice(permutacaoPopulacao)
@@ -62,5 +62,22 @@ dictFitness = distanciasAmostraInicial[0]
 dictLen = distanciasAmostraInicial[1]
 
 listaAmostraInicial = addRankingAndSort(dictFitness)
+tamanhoAmostraInicial = dictLen
 
-################## MUTAÇÃO DOS FILHOS #####################
+novosPais = []
+### cruzamento das amostras inciais, taxa de cruzamento 
+limiteCruzamento = True
+while limiteCruzamento:
+    if  len(listaAmostraInicial) > 0.3*tamanhoAmostraInicial: 
+        pai1 = random.choice(listaAmostraInicial)
+        listaAmostraInicial.remove(pai1)
+        pai2 = random.choice(listaAmostraInicial)
+        listaAmostraInicial.remove(pai2)
+        novosPais.append(cruzamento(pai1[0],pai2[0],probMutacao,DicpontosCartesianos))
+        #print(pai1,"pai1", pai2,"pai2")
+    else:
+        limiteCruzamento = False
+        
+#TODO é necessário fazer a limitação da geração de filhos para somente um tamanho de no maximo 10 emlistas maiores
+print(novosPais)
+
