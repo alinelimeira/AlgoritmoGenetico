@@ -2,7 +2,7 @@ import random
 import itertools 
 from random import sample
 #importando as funcoes
-from functions import addRankingAndSort, fitness, cruzamento
+from functions import addRankingAndSort, ajustePopulacional, fitness, cruzamento
 
 
 ############## Leitura da matriz ##############
@@ -77,7 +77,12 @@ while limiteCruzamento:
         #print(pai1,"pai1", pai2,"pai2")
     else:
         limiteCruzamento = False
-        
+
 #TODO é necessário fazer a limitação da geração de filhos para somente um tamanho de no maximo 10 emlistas maiores
-print(novosPais)
+#Fazendo o ajuste populacional nos novos pais, entao aqui na verdade eu elimino baseado no fitness
+for cont3 in range(0,len(novosPais)-1):
+    novosPais[cont3] = addRankingAndSort(novosPais[cont3])
+#print(novosPais[0][2][2])
+novosValorPais = ajustePopulacional(novosPais,tamanhoPopulacao)
+
 

@@ -45,7 +45,7 @@ def cruzamento(paiCandidato1, paiCandidato2, probMutacao, DicpontosCartesianos):
         novaPopulacao.append(filho1)
         novaPopulacao.append(filho2)
     novaPopulacao = fitness(len(novaPopulacao),novaPopulacao,DicpontosCartesianos)
-    return novaPopulacao
+    return novaPopulacao[0]
 
 
     
@@ -60,3 +60,17 @@ def mutacao(filho, probMutacao):
         filho[index1], filho[index2] = filho[index2], filho[index1]
     
     return filho
+
+
+################# AJUSTE POPULACIONAL ######################
+def ajustePopulacional(populacao, tamanhoPopulacao):
+    while len(populacao) > tamanhoPopulacao:
+        tam = len(populacao)
+        individuo1 = random.randint(0, tam-1)
+        individuo2 = random.randint(0, tam-1)
+        if individuo1 != individuo2:
+            if populacao[individuo1][2][2] < populacao[individuo2][2][2]:
+                populacao.remove(populacao[individuo2])
+            else:
+                populacao.remove(populacao[individuo1])
+    return populacao
