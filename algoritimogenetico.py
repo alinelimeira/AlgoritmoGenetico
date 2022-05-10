@@ -78,11 +78,11 @@ while limiteCruzamento:
     else:
         limiteCruzamento = False
 
+print((novosPais,"novos pais")) #to printando as listas dentro da lista
 #TODO é necessário fazer a limitação da geração de filhos para somente um tamanho de no maximo 10 emlistas maiores
 #Fazendo o ajuste populacional nos novos pais, entao aqui na verdade eu elimino baseado no fitness
 for cont3 in range(0,len(novosPais)-1):
     novosPais[cont3] = addRankingAndSort(novosPais[cont3])
 #print(novosPais[0][2][2])
 novosValorPais = ajustePopulacional(novosPais,tamanhoPopulacao)
-
-
+print((novosValorPais))

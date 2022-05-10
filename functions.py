@@ -69,7 +69,7 @@ def ajustePopulacional(populacao, tamanhoPopulacao):
         individuo1 = random.randint(0, tam-1)
         individuo2 = random.randint(0, tam-1)
         if individuo1 != individuo2:
-            if populacao[individuo1][2][2] < populacao[individuo2][2][2]:
+            if populacao[individuo1][individuo1][2] < populacao[individuo2][individuo2][2]:
                 populacao.remove(populacao[individuo2])
             else:
                 populacao.remove(populacao[individuo1])
