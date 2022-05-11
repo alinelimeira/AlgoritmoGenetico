@@ -12,7 +12,7 @@ def fitness (tamanhoPermuta, rotas, DicpontosCartesianos):
     for count2,r in enumerate(populacao):
         distancia = 0
         for index in range(len(r)-1): 
-            distancia += abs(DicpontosCartesianos[r[index+1]][0] - DicpontosCartesianos[r[index]][0]) + abs(DicpontosCartesianos[r[index+1]][1] - DicpontosCartesianos[r[index]][1])
+            distancia += (abs(DicpontosCartesianos[r[index+1]][0] - DicpontosCartesianos[r[index]][0]) + abs(DicpontosCartesianos[r[index+1]][1] - DicpontosCartesianos[r[index]][1]))
         fitnessPopulacao[" ".join(r[1:-1])] = distancia
     
     
@@ -58,7 +58,6 @@ def mutacao(filho, probMutacao):
         index1 = random.randint(0, len(filho)-1)
         index2 = random.randint(0, len(filho)-1)
         filho[index1], filho[index2] = filho[index2], filho[index1]
-    
     return filho
 
 
@@ -73,4 +72,40 @@ def ajustePopulacional(populacao, tamanhoPopulacao):
                 populacao.remove(populacao[individuo2])
             else:
                 populacao.remove(populacao[individuo1])
+    
     return populacao
+
+
+############# ALGORITMO GENETICO ##########################
+def algoritmoGenetico(tamanhoListas,resultado_geracoes,probMutacao,DicpontosCartesianos,tamanhoPopulacao):
+    #primeiramente eu tenho que tratar minha lista de listas para somente 1 lista por vez
+    for cont_listas in range(0,tamanhoListas):
+        tamanho_amostra_geracoes = len(resultado_geracoes[cont_listas])
+        lista_amostra_geracoes = resultado_geracoes[cont_listas]
+        pais_geracao = []
+        valor_daquela_geracao = []
+        ### cruzamento das amostras inciais, taxa de cruzamento 
+        limiteCruzamento = True
+        if  (len(lista_amostra_geracoes) > 0.3*tamanho_amostra_geracoes) and limiteCruzamento: 
+            pai1 = random.choice(lista_amostra_geracoes)
+            pai2 = random.choice(lista_amostra_geracoes)
+            if pai1 in pais_geracao:
+                lista_amostra_geracoes.remove(pai1)
+            else:
+                pass
+            if pai2 in pais_geracao:
+                lista_amostra_geracoes.remove(pai2)
+            else:
+                pass
+            pais_geracao.append(cruzamento(pai1[0],pai2[0],probMutacao,DicpontosCartesianos))
+            #print(pai1,"pai1", pai2,"pai2")
+        else:
+            limiteCruzamento = False
+
+        #Fazendo o ajuste populacional nos novos pais, entao aqui na verdade eu elimino baseado no fitness
+        for cont_interno in range(0,len(pais_geracao)):
+            pais_geracao[cont_interno] = addRankingAndSort(pais_geracao[cont_interno])
+        valor_daquela_geracao = ajustePopulacional(pais_geracao,tamanhoPopulacao)
+
+
+    return valor_daquela_geracao

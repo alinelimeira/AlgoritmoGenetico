@@ -1,8 +1,10 @@
 import random
 import itertools 
 from random import sample
+import time
+start = time.time()
 #importando as funcoes
-from functions import addRankingAndSort, ajustePopulacional, fitness, cruzamento
+from functions import addRankingAndSort, ajustePopulacional, algoritmoGenetico, fitness, cruzamento
 
 
 ############## Leitura da matriz ##############
@@ -63,8 +65,7 @@ dictLen = distanciasAmostraInicial[1]
 
 listaAmostraInicial = addRankingAndSort(dictFitness)
 tamanhoAmostraInicial = dictLen
-
-novosPais = []
+pais_1geracao = []
 ### cruzamento das amostras inciais, taxa de cruzamento 
 limiteCruzamento = True
 while limiteCruzamento:
@@ -73,16 +74,24 @@ while limiteCruzamento:
         listaAmostraInicial.remove(pai1)
         pai2 = random.choice(listaAmostraInicial)
         listaAmostraInicial.remove(pai2)
-        novosPais.append(cruzamento(pai1[0],pai2[0],probMutacao,DicpontosCartesianos))
+        pais_1geracao.append(cruzamento(pai1[0],pai2[0],probMutacao,DicpontosCartesianos))
         #print(pai1,"pai1", pai2,"pai2")
     else:
         limiteCruzamento = False
 
-print((novosPais,"novos pais")) #to printando as listas dentro da lista
-#TODO é necessário fazer a limitação da geração de filhos para somente um tamanho de no maximo 10 emlistas maiores
 #Fazendo o ajuste populacional nos novos pais, entao aqui na verdade eu elimino baseado no fitness
-for cont3 in range(0,len(novosPais)-1):
-    novosPais[cont3] = addRankingAndSort(novosPais[cont3])
-#print(novosPais[0][2][2])
-novosValorPais = ajustePopulacional(novosPais,tamanhoPopulacao)
-print((novosValorPais))
+for cont_interno in range(0,len(pais_1geracao)):
+    pais_1geracao[cont_interno] = addRankingAndSort(pais_1geracao[cont_interno])
+novo_valor_pais = ajustePopulacional(pais_1geracao,tamanhoPopulacao)
+
+
+
+# JA ESTA RODANDO A PARTIR DA 1 GERAÇÃO 
+for cont_geracoes in range(criteriodeParada):
+    resultado_geracoes = algoritmoGenetico(len(novo_valor_pais),novo_valor_pais,probMutacao,DicpontosCartesianos,tamanhoPopulacao)
+    resultado = algoritmoGenetico(len(resultado_geracoes),resultado_geracoes,probMutacao,DicpontosCartesianos,tamanhoPopulacao)
+print(f"O Menor caminho é: {resultado[0][0]}")
+
+#QAUANDO EU CHAMO O ALGORITMO GENETICO ELE TEM QUE ME RESULTAR UMA LISTA TAL QUAL A LISTADEAMOSTRAINICIAL
+end = time.time()
+print(end - start)
