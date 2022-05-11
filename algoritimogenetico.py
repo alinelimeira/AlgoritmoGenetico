@@ -43,22 +43,16 @@ txReproducao= 70
 probMutacao = 0.5
 
 #Populacao inicial a partir de 10  tamanhoPopulacao
-
+pontoCorteMid = len(vertices)//2
 populacaodisponivel = []
 populacaoAmostra = []
+permutacaoPopulacao = []
 
-permutacaoPopulacao =  list(itertools.permutations(vertices)) #PERMUTAÇAO TOTAL
-#escolha aleatoria de 10 indivifuos, 
-contador = 0
-while contador < tamanhoPopulacao:
-    randomPickup = random.choice(permutacaoPopulacao)
-    if randomPickup not in populacaoAmostra:
-        populacaoAmostra.append(randomPickup)
-    else:
-        contador -= 1
-        pass
-    contador += 1
-
+#permutacaoPopulacao =  list(itertools.permutations(vertices)) #PERMUTAÇAO TOTAL
+#A PERMUTAÇÃO JA É O PROPRIO CRUZAMENTO, então dar um jeito de chamar o cruzamento
+populacaoAmostra.append(vertices[0:len(vertices)])
+populacaoAmostra.append(vertices[::-1])
+print(populacaoAmostra)
 distanciasAmostraInicial = fitness(len(populacaoAmostra), populacaoAmostra, DicpontosCartesianos)
 dictFitness = distanciasAmostraInicial[0]
 dictLen = distanciasAmostraInicial[1]
@@ -94,4 +88,4 @@ print(f"O Menor caminho é: {resultado[0][0]}")
 
 #QAUANDO EU CHAMO O ALGORITMO GENETICO ELE TEM QUE ME RESULTAR UMA LISTA TAL QUAL A LISTADEAMOSTRAINICIAL
 end = time.time()
-print(end - start)
+print(end - start,"Unidade de tempo")
