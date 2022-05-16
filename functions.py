@@ -22,11 +22,8 @@ def fitness (tamanhoPermuta, rotas, DicpontosCartesianos):
 def addRankingAndSort(dictIndividuos):
     ############ORDENAÇAO E METODO DA ROLETA PARA SELECIONAR OS PAIS ###############
     sortedDictFit = sorted(dictIndividuos.items(), key=operator.itemgetter(1))
-    #pegar cada indivíduo e fazer 1/distanciatotaldelemsm e dps escolher de dois em dois e formar os pais 
     for cont,itemlist in enumerate(sortedDictFit):
         sortedDictFit[cont] += (1/itemlist[1],)
-    ###ADICIONANDO A LISTA DOS PAIS O VALOR DO RANKING DOS MESMOS
-    #adicionando teste
     return sortedDictFit
 
 

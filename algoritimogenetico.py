@@ -1,5 +1,4 @@
 import random
-import itertools 
 from random import sample
 import time
 start = time.time()
@@ -32,8 +31,7 @@ for i in range(tam_linha):
             vertices.append(letra)
             
 vertices= sorted(vertices)
-#print("Aqui são os vertices", vertices, "dicpontos",DicpontosCartesianos)
-#print(matriz)
+
 
 ########## Parametros do A.G ######################
 
@@ -43,16 +41,16 @@ txReproducao= 70
 probMutacao = 0.5
 
 #Populacao inicial a partir de 10  tamanhoPopulacao
-pontoCorteMid = len(vertices)//2
 populacaodisponivel = []
 populacaoAmostra = []
 permutacaoPopulacao = []
 
-#permutacaoPopulacao =  list(itertools.permutations(vertices)) #PERMUTAÇAO TOTAL
-#A PERMUTAÇÃO JA É O PROPRIO CRUZAMENTO, então dar um jeito de chamar o cruzamento
-populacaoAmostra.append(vertices[0:len(vertices)])
-populacaoAmostra.append(vertices[::-1])
-print(populacaoAmostra)
+#permutacaoPopulacao =  list(itertools.permutations(vertices)) 
+for i in range(0, tamanhoPopulacao):
+    populacaoAmostra.append(random.sample(vertices, len(vertices)))
+
+#print(populacaoAmostra)
+
 distanciasAmostraInicial = fitness(len(populacaoAmostra), populacaoAmostra, DicpontosCartesianos)
 dictFitness = distanciasAmostraInicial[0]
 dictLen = distanciasAmostraInicial[1]
@@ -73,19 +71,17 @@ while limiteCruzamento:
     else:
         limiteCruzamento = False
 
-#Fazendo o ajuste populacional nos novos pais, entao aqui na verdade eu elimino baseado no fitness
+#Fazendo o ajuste populacional nos novos pais
 for cont_interno in range(0,len(pais_1geracao)):
     pais_1geracao[cont_interno] = addRankingAndSort(pais_1geracao[cont_interno])
 novo_valor_pais = ajustePopulacional(pais_1geracao,tamanhoPopulacao)
 
 
 
-# JA ESTA RODANDO A PARTIR DA 1 GERAÇÃO 
 for cont_geracoes in range(criteriodeParada):
     resultado_geracoes = algoritmoGenetico(len(novo_valor_pais),novo_valor_pais,probMutacao,DicpontosCartesianos,tamanhoPopulacao)
     resultado = algoritmoGenetico(len(resultado_geracoes),resultado_geracoes,probMutacao,DicpontosCartesianos,tamanhoPopulacao)
 print(f"O Menor caminho é: {resultado[0][0]}")
 
-#QAUANDO EU CHAMO O ALGORITMO GENETICO ELE TEM QUE ME RESULTAR UMA LISTA TAL QUAL A LISTADEAMOSTRAINICIAL
 end = time.time()
 print(end - start,"Unidade de tempo")
